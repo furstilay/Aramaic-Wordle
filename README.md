@@ -1,5 +1,3 @@
 © Ilay Furst
 
-Created in a night and half :)
-
-Coded in Yeshivat Har Etzion (Hagush)
+Created in a night and half in Yeshivat Har Etzion (Hagush) :)

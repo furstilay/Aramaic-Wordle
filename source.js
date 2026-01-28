@@ -17,6 +17,7 @@ let current_row = 1
 let current_letter = 1
 let building_word = [];
 let gameEnded = false;
+let guessesString = ""
 
 let colors = {
     'gray': 'rgb(120, 124, 126)',
@@ -41,11 +42,63 @@ function numberToWord (num) {
     }
 }
 
+let savedDate = readFromDevice('date');
+const savedGusses = readFromDevice('guesses');
+if (!savedGusses) {
+    localStorage.removeItem('date');
+    localStorage.removeItem('guesses');
+    savedDate = null;
+}
+
+const today = new Date().toISOString().split('T')[0];
+if (today !== savedDate) {
+    localStorage.removeItem('date');
+    localStorage.removeItem('guesses');
+} else {
+    guessesString += savedGusses;
+    let oldGuesses = savedGusses.split(';');
+    oldGuesses.pop(); // the .split adds one extra empty element in the array
+    console.log(oldGuesses);
+    oldGuesses.forEach(element => {
+        let letters = element.split(',');
+        letter_number = 1
+        let word = '';
+        letters.forEach(letter => {
+            let Char = letter.charAt(0);
+            word += Char;
+            let color = letter.slice(1);
+            let row = numberToWord(current_row);
+            let letterr = numberToWord(letter_number);
+            let square = document.querySelector(`.game_row.${row} .square.${letterr}`);
+            square.textContent = Char;
+            drawLetter(Char, color);
+            let tag = 'nothing';
+            switch (color) {
+                case 'yellow':
+                    tag = 'near';
+                    break;
+                case 'green':
+                    tag = 'exactly'
+                    break;
+            }
+            square.classList.add(tag);
+            letter_number++;
+            if (word === randomWord) {
+                endGame('win', timeout=0);
+            }
+        });
+        current_row++;
+    });
+    if (current_row > 6) {
+        endGame('lose', timeout=0);
+    }
+}
 
 // Screen Keyboard
 let chars = document.querySelectorAll('.char');
 chars.forEach(element => {
     element.addEventListener('click', (event) => {
+        if (gameEnded) {return;} // Make typing not avilable if the game has ended
         const key = element.textContent;
 
         const isHebrewLetter = /^[א-ת]$/.test(key);
@@ -88,6 +141,7 @@ enterButton.addEventListener('click', () => {
 });
 
 window.addEventListener('keydown', (event) => {
+    if (gameEnded) {return;} // Make typing not avilable if the game has ended
     const key = event.key;
 
     const isHebrewLetter = /^[א-ת]$/.test(key);
@@ -120,7 +174,7 @@ window.addEventListener('keydown', (event) => {
     }
 });
 
-function endGame (status) {
+function endGame (status, timeout=1500) {
     gameEnded = true;
     const note = document.querySelector('.note');
     if (status === 'lose') {
@@ -130,7 +184,7 @@ function endGame (status) {
     }
     setTimeout(() => {
         note.classList.add('enter');
-    }, 1500);
+    }, timeout);
 }
 
 function scoreGuess(guessArray, correctArray) {
@@ -202,6 +256,11 @@ function analayzeWord () {
                 color = 'green';
                 break;
         }
+        guessesString += building_word[i-1];
+        guessesString += color;
+        if (i === 5) { guessesString += ';' } else { guessesString += ',' }
+        saveToDevice('date', new Date().toISOString().split('T')[0]);
+        saveToDevice('guesses', guessesString);
         setTimeout(() => {
             revealResult(square, tag);
             drawLetter(square.textContent, color)

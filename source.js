@@ -58,7 +58,6 @@ if (today !== savedDate) {
     guessesString += savedGusses;
     let oldGuesses = savedGusses.split(';');
     oldGuesses.pop(); // the .split adds one extra empty element in the array
-    console.log(oldGuesses);
     oldGuesses.forEach(element => {
         let letters = element.split(',');
         letter_number = 1
@@ -116,7 +115,6 @@ chars.forEach(element => {
 
 let backspaceButton = document.querySelector('.button.backspace');
 backspaceButton.addEventListener('click', () => {
-    console.log(current_letter);
     if (current_letter > 1) {
         current_letter--;
     }
@@ -154,7 +152,6 @@ window.addEventListener('keydown', (event) => {
         building_word.push(key);
         current_letter++;
     } else if (key === "Backspace") {
-        console.log(current_letter);
         if (current_letter > 1) {
             current_letter--;
         }
@@ -222,7 +219,6 @@ function scoreGuess(guessArray, correctArray) {
 function drawLetter (letter, color) {
     // Change the background color of a keyboard letter
     let divs = document.querySelectorAll('.char');
-    console.log(divs);
     // Find the letter on the keyboard
     divs.forEach(element => {
         if (element.textContent === letter) {
@@ -236,8 +232,6 @@ function drawLetter (letter, color) {
 }
 
 function analayzeWord () {
-    console.log(randomWord.split(''));
-    console.log(building_word);
     let word_arr = randomWord.split('');
     let scores = scoreGuess(building_word, word_arr);
     for (let i=1; i<6; i++) {

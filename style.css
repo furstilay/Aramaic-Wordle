@@ -149,9 +149,23 @@ h2 {
     display: block;
     max-width: 100%;
     max-height: 100%;
-    pointer-events: none;
-    -webkit-user-drag: none;
-    user-select: none;
+    img {
+  /* 1. Prevents the system context menu (Save Image, etc.) */
+  -webkit-touch-callout: none; 
+  
+  /* 2. Prevents the user from selecting the image as text/object */
+  -webkit-user-select: none;
+  user-select: none;
+
+  /* 3. Prevents the 'ghost' drag-and-drop behavior */
+  -webkit-user-drag: none;
+
+  /* 4. Ensures clicks pass to the parent */
+  pointer-events: none;
+  
+  /* 5. Removes the tap highlight color on some mobile browsers */
+  -webkit-tap-highlight-color: transparent;
+}
 }
 .keyboard-container .keyboard-row .char:hover, .button:hover {
     cursor: pointer;

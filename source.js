@@ -42,6 +42,14 @@ function numberToWord (num) {
     }
 }
 
+function isWordReal (word) {
+    if (dictionary.includes(word)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 let savedDate = readFromDevice('date');
 const savedGusses = readFromDevice('guesses');
 if (!savedGusses) {
@@ -127,7 +135,7 @@ backspaceButton.addEventListener('click', () => {
 
 let enterButton = document.querySelector('.button.enter');
 enterButton.addEventListener('click', () => {
-    if (current_letter === 6) {
+    if (current_letter === 6 && isWordReal(building_word.join(''))) {
         analayzeWord();
         current_row++;
         current_letter = 1;
@@ -160,7 +168,7 @@ window.addEventListener('keydown', (event) => {
         let square = document.querySelector(`.game_row.${row} .square.${letter}`);
         square.textContent = '';
         building_word.pop();
-    } else if (key === "Enter" && current_letter === 6) {
+    } else if (key === "Enter" && current_letter === 6 && isWordReal(building_word.join(''))) {
         analayzeWord();
         current_row++;
         current_letter = 1;

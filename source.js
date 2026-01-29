@@ -88,7 +88,7 @@ if (today !== savedDate) {
         });
         current_row++;
     });
-    if (current_row > 6) {
+    if (current_row > 6 && !gameEnded) {
         endGame('lose', timeout=0);
     }
 }

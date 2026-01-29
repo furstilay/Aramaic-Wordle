@@ -111,6 +111,7 @@ h2 {
     gap: 6%;
     direction: ltr;
     margin-bottom: 0.3%;
+    touch-action: manipulation;
 }
 
 .keyboard-container .keyboard-row {

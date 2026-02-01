@@ -1,7 +1,18 @@
 
 
-//const aramaicWords = finalWords;
-//const randomWord = aramaicWords[Math.floor(Math.random() * aramaicWords.length)];
+//Pop up windows (Info/Settings)
+const infoButton = document.querySelector('.menu-button.info');
+infoButton.addEventListener('click', () => {
+    const infoPopup = document.querySelector('.pop-up.info');
+    infoPopup.classList.add('show');
+});
+const settingsButton = document.querySelector('.menu-button.settings');
+settingsButton.addEventListener('click', () => {
+    const settingsPopup = document.querySelector('.pop-up.settings');
+    settingsPopup.classList.add('show');
+});
+
+const realWordsToggle = document.querySelector('.switch input');
 
 function getDayOfYear(date = new Date()) {
     const startOfYear = new Date(date.getFullYear(), 0, 0);
@@ -43,6 +54,10 @@ function numberToWord (num) {
 }
 
 function isWordReal (word) {
+    if (!realWordsToggle.checked) {
+        return true;
+    }
+
     if (dictionary.includes(word)) {
         return true;
     } else {
@@ -290,3 +305,13 @@ async function revealResult(squareElement, tag) {
         { transform: 'rotateX(0deg)' }
     ], { duration: 300, fill: 'forwards', easing: 'ease-out' });
 }
+
+
+// Close pop-up
+let closeButtons = document.querySelectorAll('.close-button');
+closeButtons.forEach(element => {
+    element.addEventListener('click', () => {
+        let popup = element.parentElement;
+        popup.classList.remove('show');
+    });
+});
